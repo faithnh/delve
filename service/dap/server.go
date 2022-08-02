@@ -255,12 +255,12 @@ type dapClientCapabilites struct {
 // paging and context-specific string limits.
 var DefaultLoadConfig = proc.LoadConfig{
 	FollowPointers:     true,
-	MaxVariableRecurse: 1,
+	MaxVariableRecurse: 10,
 	// TODO(polina): consider 1024 limit instead:
 	// - vscode+C appears to use 1024 as the load limit
 	// - vscode viewlet hover truncates at 1023 characters
-	MaxStringLen:    512,
-	MaxArrayValues:  64,
+	MaxStringLen:    8192,
+	MaxArrayValues:  1024,
 	MaxStructFields: -1,
 }
 
@@ -2434,9 +2434,9 @@ func (s *Session) convertVariableToString(v *proc.Variable) string {
 
 const (
 	// Limit the length of a string representation of a compound or reference type variable.
-	maxVarValueLen = 1 << 8 // 256
+	maxVarValueLen = 1 << 14 // 8192
 	// Limit the length of an inlined map key.
-	maxMapKeyValueLen = 64
+	maxMapKeyValueLen = 1024
 )
 
 // Flags for convertVariableWithOpts option.
